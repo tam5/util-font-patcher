@@ -1,5 +1,7 @@
-FROM ubuntu:trusty
+FROM python:2
 
-RUN apt-get update && apt-get install -y fontforge
+WORKDIR /usr/src/app
 
-ENTRYPOINT ["/usr/bin/fontforge"]
+RUN apt-get update && apt-get install -y python-fontforge
+
+CMD [ "python" ]
