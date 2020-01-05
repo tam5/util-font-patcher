@@ -30,7 +30,7 @@ for prop in ['os2_windescent', 'os2_typodescent', 'hhea_descent']:
     adjust(font, prop, args["factor"] * 2)
 
 for attr in ['fontname', 'familyname', 'fullname']:
-    value = args[attr] or "{}-Patched-{}".format(getattr(font, attr), args["factor"])
+    value = args[attr] or "{} {}".format(getattr(font, attr), args["factor"])
     setattr(font, attr, value)
 
 font.copyright = "(c) {} Acme Corp. All Rights Reserved.".format(datetime.now().year)
@@ -46,11 +46,14 @@ print(colored('                  Name for Humans: ', 'white', attrs=["bold"]) + 
 print('')
 print(colored('Saved patched font file: {}'.format(colored(newFileName, 'blue')), 'green'))
 
-font.sfnt_names = (
-    ('English (US)', 'Family', "font.familyname"),
-    ('English (US)', 'UniqueID', "font.fontname: {}".format(args["factor"])),
-    ('English (US)', 'Preferred Family', font.familyname),
-)
+sfnt = {}
+for el in font.sfnt_names:
+    sfnt[el[1]] = el
+
+sfnt["UniqueID"] = ('English (US)', 'UniqueID', font.fontname)
+sfnt["Preferred Family"] = ('English (US)', 'Preferred Family', font.familyname)
+
+font.sfnt_names = tuple(sfnt.values())
 
 font.save(args["outputDir"] + "/" + newFileName)
 font.generate(args["outputDir"] + "/" + newFileName)
