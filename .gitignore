@@ -1,2 +1,4 @@
 fonts/
+*.pyc
+
 .DS_Store
