@@ -21,18 +21,13 @@ def adjust(font, attribute, factor):
 args = parseOpts()
 font = fontforge.open(args["input"])
 
-props = [
-    'os2_winascent',
-    'os2_windescent',
-    'os2_typoascent',
-    'os2_typodescent',
-    'hhea_ascent',
-    'hhea_descent'
-]
 
 print('')
-for prop in props:
+for prop in ['os2_winascent', 'os2_typoascent', 'hhea_ascent']:
     adjust(font, prop, args["factor"])
+
+for prop in ['os2_windescent', 'os2_typodescent', 'hhea_descent']:
+    adjust(font, prop, args["factor"] * 2)
 
 for attr in ['fontname', 'familyname', 'fullname']:
     value = args[attr] or "{} - Patched ({})".format(getattr(font, attr), args["factor"])
@@ -44,3 +39,4 @@ print('')
 print(colored('Successfully created patched font: {}'.format(colored(font.fontname, 'blue')), 'green'))
 
 font.save(args["output"])
+font.generate(args["output"])
