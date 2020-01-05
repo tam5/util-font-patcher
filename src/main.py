@@ -1,11 +1,8 @@
 import fontforge
-import sys
 
 from termcolor import colored
 from datetime import datetime
 from parseOpts import parseOpts
-
-args = parseOpts()
 
 
 def adjust(font, attribute, factor):
@@ -21,6 +18,7 @@ def adjust(font, attribute, factor):
     setattr(font, attribute, new)
 
 
+args = parseOpts()
 font = fontforge.open(args["input"])
 
 props = [
@@ -45,6 +43,4 @@ font.copyright = "(c) {} Acme Corp. All Rights Reserved.".format(datetime.now().
 print('')
 print(colored('Successfully created patched font: {}'.format(colored(font.fontname, 'blue')), 'green'))
 
-sys.exit()
-
-# font.save("/home/NewFont.ttf")
+font.save(args["output"])
