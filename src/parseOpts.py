@@ -4,7 +4,7 @@ import sys
 from termcolor import colored
 
 shortOpts = "hi:o:f:"
-longOpts = ["help", "input=", "output=", "factor=", "fontname=", "familyname=", "fullname="]
+longOpts = ["help", "input=", "outputDir=", "factor=", "fontname=", "familyname=", "fullname="]
 
 
 def parseOpts():
@@ -29,7 +29,7 @@ def parseOpts():
             print(colored('Required Arguments:', 'yellow'))
             print(colored('    -f, --factor           The factor by which to multiply the line height', 'green'))
             print(colored('    -i, --input            The original font file', 'green'))
-            print(colored('    -o, --output           The path to the new font file', 'green'))
+            print(colored('    -o, --outputDir        The path to the new font file', 'green'))
             print('')
             print(colored('Options:', 'yellow'))
             print(colored('    -h, --help             Display this help message', 'green'))
@@ -40,14 +40,14 @@ def parseOpts():
             sys.exit(0)
         elif currentArgument in ("-i", "--input"):
             args["input"] = currentValue
-        elif currentArgument in ("-o", "--output"):
-            args["output"] = currentValue
+        elif currentArgument in ("-o", "--outputDir"):
+            args["outputDir"] = currentValue
         elif currentArgument in ("-f", "--factor"):
             args["factor"] = float(currentValue)
         elif currentArgument in ("--fontname", "--fullname", "--familyname"):
             args[currentArgument.strip('--')] = currentValue
 
-    for arg in ['factor', 'input', 'output']:
+    for arg in ['factor', 'input', 'outputDir']:
         if arg not in args:
             print(colored("Missing required argument '{}'.".format(arg), 'red'))
 

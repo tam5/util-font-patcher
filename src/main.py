@@ -1,3 +1,4 @@
+import os
 import fontforge
 
 from termcolor import colored
@@ -21,7 +22,6 @@ def adjust(font, attribute, factor):
 args = parseOpts()
 font = fontforge.open(args["input"])
 
-
 print('')
 for prop in ['os2_winascent', 'os2_typoascent', 'hhea_ascent']:
     adjust(font, prop, args["factor"])
@@ -30,13 +30,27 @@ for prop in ['os2_windescent', 'os2_typodescent', 'hhea_descent']:
     adjust(font, prop, args["factor"] * 2)
 
 for attr in ['fontname', 'familyname', 'fullname']:
-    value = args[attr] or "{} - Patched ({})".format(getattr(font, attr), args["factor"])
+    value = args[attr] or "{}-Patched-{}".format(getattr(font, attr), args["factor"])
     setattr(font, attr, value)
 
 font.copyright = "(c) {} Acme Corp. All Rights Reserved.".format(datetime.now().year)
 
-print('')
-print(colored('Successfully created patched font: {}'.format(colored(font.fontname, 'blue')), 'green'))
+filename, extension = os.path.splitext(os.path.basename(args["input"]))
+newFileName = "{}Patched {}{}".format(filename, args["factor"], extension)
 
-font.save(args["output"])
-font.generate(args["output"])
+print('')
+print(colored('Successfully created patched font:', 'green'))
+print(colored('                         Fontname: ', 'white', attrs=["bold"]) + colored(font.fontname, 'blue'))
+print(colored('                      Family Name: ', 'white', attrs=["bold"]) + colored(font.familyname, 'blue'))
+print(colored('                  Name for Humans: ', 'white', attrs=["bold"]) + colored(font.fullname, 'blue'))
+print('')
+print(colored('Saved patched font file: {}'.format(colored(newFileName, 'blue')), 'green'))
+
+font.sfnt_names = (
+    ('English (US)', 'Family', "font.familyname"),
+    ('English (US)', 'UniqueID', "font.fontname: {}".format(args["factor"])),
+    ('English (US)', 'Preferred Family', font.familyname),
+)
+
+font.save(args["outputDir"] + "/" + newFileName)
+font.generate(args["outputDir"] + "/" + newFileName)
