@@ -44,7 +44,6 @@ print(colored('                         Fontname: ', 'white', attrs=["bold"]) + 
 print(colored('                      Family Name: ', 'white', attrs=["bold"]) + colored(font.familyname, 'blue'))
 print(colored('                  Name for Humans: ', 'white', attrs=["bold"]) + colored(font.fullname, 'blue'))
 print('')
-print(colored('Saved patched font file: {}'.format(colored(newFileName, 'blue')), 'green'))
 
 sfnt = {}
 for el in font.sfnt_names:
@@ -57,3 +56,5 @@ font.sfnt_names = tuple(sfnt.values())
 
 font.save(args["outputDir"] + "/" + newFileName)
 font.generate(args["outputDir"] + "/" + newFileName)
+
+print(colored('Saved patched font file: {}'.format(colored(newFileName, 'blue')), 'green'))
