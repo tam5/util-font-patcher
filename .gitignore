@@ -1,4 +1,6 @@
-fonts/
+fonts/*
+!fonts/patched/.gitkeep
+
 *.pyc
 
 .DS_Store
