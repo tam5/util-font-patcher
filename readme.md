@@ -20,6 +20,9 @@ The easiest way to run the script is to build a docker image via the
 docker build -t font-patcher .
 ```
 
+If you are using the examples below as is, make sure to copy your original font into the `fonts`
+directory of this project so the files will be mapped into the container.
+
 ### Patch a single font file
 
 ```bash
@@ -36,11 +39,13 @@ This is really just the repetition of patching a single font file, but since
 it's so common, here is an example:
 
 ```bash
-for x in $(ls fonts/Operator\ Mono); do
+for x in $(/bin/ls fonts/OperatorMono); do
     docker run --rm -v $(pwd):/home font-patcher \
         /usr/bin/python /home/src/main.py \
         --factor=1.3 \ # increase the line height by 30%
-        --input=/home/fonts/$x \ # mounted path to the original font file
+        --input=/home/fonts/OperatorMono/$x \ # mounted path to the original font file
         --outputDir=/home/fonts/patched # directory to save the new font file
 done
 ```
+
+Once your fonts are patched, you can install them on your machine for future use.
